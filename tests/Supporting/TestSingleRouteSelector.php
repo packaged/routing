@@ -6,6 +6,7 @@ use Packaged\Context\Context;
 use Packaged\Http\Response;
 use Packaged\Routing\Handler\FuncHandler;
 use Packaged\Routing\Handler\Handler;
+use Packaged\Routing\Route;
 use Packaged\Routing\RouteSelector;
 
 class TestSingleRouteSelector extends RouteSelector
@@ -19,6 +20,11 @@ class TestSingleRouteSelector extends RouteSelector
 
   protected function _generateRoutes()
   {
+    if($this->_route instanceof Route)
+    {
+      yield $this->_route;
+      return null;
+    }
     return $this->_route;
   }
 
