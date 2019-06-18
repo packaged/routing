@@ -3,7 +3,7 @@ namespace Packaged\Routing;
 
 use Packaged\Context\Context;
 
-class RequestDataConstraint implements Condition
+class RequestDataCondition implements Condition
 {
   protected $_values = [];
 

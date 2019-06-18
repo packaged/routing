@@ -11,7 +11,7 @@ use function preg_replace;
 use function rtrim;
 use function strpos;
 
-class RequestConstraint implements Condition, RouteCompleter
+class RequestCondition implements Condition, RouteCompleter
 {
   const SCHEME = 'scheme';
   const PORT = 'port';
@@ -38,7 +38,7 @@ class RequestConstraint implements Condition, RouteCompleter
   protected $_routedPath;
   protected $_extractedData = [];
 
-  protected $_constraints = [];
+  protected $_conditions = [];
 
   public static function i()
   {
@@ -52,7 +52,7 @@ class RequestConstraint implements Condition, RouteCompleter
 
   protected function _add($on, $with, $type = self::TYPE_MATCH)
   {
-    $this->_constraints[] = [$on, $with, $type];
+    $this->_conditions[] = [$on, $with, $type];
     return $this;
   }
 
@@ -114,7 +114,7 @@ class RequestConstraint implements Condition, RouteCompleter
   public function match(Context $context): bool
   {
     $this->_routedPath = $context->meta()->get(self::META_ROUTED_PATH, '/');
-    foreach($this->_constraints as [$matchOn, $matchWith, $matchType])
+    foreach($this->_conditions as [$matchOn, $matchWith, $matchType])
     {
       if($matchOn == self::PATH)
       {

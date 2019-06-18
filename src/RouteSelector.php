@@ -18,7 +18,7 @@ abstract class RouteSelector implements Handler
    */
   protected static function _route($path, $result)
   {
-    return Route::with(RequestConstraint::i()->path($path))->setHandler($result);
+    return Route::with(RequestCondition::i()->path($path))->setHandler($result);
   }
 
   /**
