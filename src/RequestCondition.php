@@ -122,7 +122,7 @@ class RequestCondition implements Condition, RouteCompleter
         {
           $matchType = self::TYPE_START;
         }
-        else
+        else if(is_string($matchWith))
         {
           $matchWith = $this->_convertPathToRegex($matchWith, $matchType);
           $matchType = self::TYPE_REGEX;
