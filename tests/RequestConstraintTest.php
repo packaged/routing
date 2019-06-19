@@ -3,8 +3,8 @@
 namespace Packaged\Tests\Routing;
 
 use Packaged\Context\Context;
-use Packaged\Routing\RequestCondition;
 use Packaged\Http\Request;
+use Packaged\Routing\RequestCondition;
 use PHPUnit\Framework\TestCase;
 
 class RequestConstraintTest extends TestCase
@@ -129,5 +129,35 @@ class RequestConstraintTest extends TestCase
     $request = Request::create('http://www.test.com:8080/INV123');
     $ctx = new Context($request);
     RequestCondition::i()->path('/{test#test}')->match($ctx);
+  }
+
+  public function testMatchedPath()
+  {
+    $request = Request::create('http://www.test.com:8080/one/two/three', 'POST');
+    $ctx = new Context($request);
+
+    // fail to match EOL
+    $ctx->meta()->set(RequestCondition::META_ROUTED_PATH, '/one/two');
+    $constraint = RequestCondition::i()->path('$');
+    $this->assertFalse($constraint->match($ctx));
+    $this->assertEquals('/one/two', $ctx->meta()->get(RequestCondition::META_ROUTED_PATH));
+
+    // match ``
+    $constraint = RequestCondition::i()->path('');
+    $this->assertTrue($constraint->match($ctx));
+    $constraint->complete($ctx);
+    $this->assertEquals('/one/two', $ctx->meta()->get(RequestCondition::META_ROUTED_PATH));
+
+    // match `three`
+    $constraint = RequestCondition::i()->path('three');
+    $this->assertTrue($constraint->match($ctx));
+    $constraint->complete($ctx);
+    $this->assertEquals('/one/two/three', $ctx->meta()->get(RequestCondition::META_ROUTED_PATH));
+
+    // match EOL
+    $constraint = RequestCondition::i()->path('$');
+    $this->assertTrue($constraint->match($ctx));
+    $constraint->complete($ctx);
+    $this->assertEquals('/one/two/three', $ctx->meta()->get(RequestCondition::META_ROUTED_PATH));
   }
 }

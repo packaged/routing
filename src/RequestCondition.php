@@ -139,13 +139,20 @@ class RequestCondition implements Condition, RouteCompleter
 
   protected function _convertPathToRegex($path, $type)
   {
+    if(substr($path, -1) === '$')
+    {
+      $path = substr($path, 0, -1);
+      $type = self::TYPE_EXACT;
+    }
+
     if(empty($path))
     {
       $path = $this->_routedPath;
     }
-    else if($path[0] !== '/')
+
+    if($path && $path[0] !== '/')
     {
-      $path = rtrim($this->_routedPath, '/') . '/' . $path;
+      $path = rtrim($this->_routedPath, '/') . ($path ? '/' . $path : '');
     }
 
     if(strpos($path, '{') !== false)
