@@ -21,6 +21,10 @@ abstract class RouteSelector implements Handler
     return Route::with(RequestCondition::i()->path($path))->setHandler($result);
   }
 
+  protected function _initialize()
+  {
+  }
+
   /**
    * @param Context $context
    *
@@ -28,6 +32,7 @@ abstract class RouteSelector implements Handler
    */
   protected function _getHandler(Context $context)
   {
+    $this->_initialize();
     $conditions = $this->_generateRoutes();
     if(is_iterable($conditions))
     {
