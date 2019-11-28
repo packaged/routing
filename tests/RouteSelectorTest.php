@@ -4,6 +4,7 @@ namespace Packaged\Tests\Routing;
 
 use Packaged\Context\Context;
 use Packaged\Http\Request;
+use Packaged\Tests\Routing\Supporting\TestHandlerRouteSelector;
 use Packaged\Tests\Routing\Supporting\TestNoRouteSelector;
 use Packaged\Tests\Routing\Supporting\TestRouteSelector;
 use Packaged\Tests\Routing\Supporting\TestSingleRouteSelector;
@@ -31,6 +32,19 @@ class RouteSelectorTest extends TestCase
   public function testEmptySelector()
   {
     $selector = new TestSingleRouteSelector(false);
+    $this->expectExceptionMessage('Unavailable');
+    $selector->handle(new Context())->getContent();
+  }
+
+  public function testHandlerSelector()
+  {
+    $selector = new TestHandlerRouteSelector();
+    $this->assertEquals('single', $selector->handle(new Context())->getContent());
+  }
+
+  public function testHandlerEmptySelector()
+  {
+    $selector = new TestHandlerRouteSelector(false);
     $this->expectExceptionMessage('Unavailable');
     $selector->handle(new Context())->getContent();
   }
