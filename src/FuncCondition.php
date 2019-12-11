@@ -13,6 +13,11 @@ class FuncCondition implements Condition
     $this->_func = $func;
   }
 
+  public static function i(callable $func)
+  {
+    return new static($func);
+  }
+
   public function match(Context $context): bool
   {
     return ($this->_func)($context);

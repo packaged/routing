@@ -30,6 +30,6 @@ class FuncConditionTest extends TestCase
   {
     $c = $this->_makeContext();
     self::assertTrue((new FuncCondition(function (Context $ctx) { return $ctx->meta()->has('a'); }))->match($c));
-    self::assertFalse((new FuncCondition(function (Context $ctx) { return $ctx->meta()->has('b'); }))->match($c));
+    self::assertFalse((FuncCondition::i(function (Context $ctx) { return $ctx->meta()->has('b'); }))->match($c));
   }
 }
