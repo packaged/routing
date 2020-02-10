@@ -15,4 +15,9 @@ class HealthCheckCondition implements Condition
     $hasHeader = $hasHeader || stripos($r->userAgent(), 'elb-healthchecker') !== false;
     return $hasHeader || stripos($r->path(), '_ah/health') !== false;
   }
+
+  public static function i()
+  {
+    return new static();
+  }
 }
