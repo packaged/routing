@@ -7,6 +7,10 @@ use Packaged\Routing\Handler\Handler;
 class Route extends ConditionSet implements ConditionHandler, RouteCompleter
 {
   private $_result;
+  /**
+   * @var array
+   */
+  protected $_onComplete = [];
 
   public function getHandler()
   {
@@ -33,6 +37,16 @@ class Route extends ConditionSet implements ConditionHandler, RouteCompleter
         $condition->complete($context);
       }
     }
+    foreach($this->_onComplete as $callback)
+    {
+      $callback($context);
+    }
+  }
+
+  public function addCompleteCallback(callable $callback)
+  {
+    $this->_onComplete[] = $callback;
+    return $this;
   }
 
 }
