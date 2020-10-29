@@ -56,10 +56,17 @@ class RouteTest extends TestCase
   public function testComplete()
   {
     $ctx = new Context(Request::create('/route_extra'));
+    /** @var Route $route */
     $route = Route::i()->add(RequestCondition::i()->path('{pathname}'));
+    $route->addCompleteCallback(
+      function (Context $c) {
+        $c->meta()->set('completed', true);
+      }
+    );
     $route->match($ctx);
     $route->complete($ctx);
     $this->assertEquals('route_extra', $ctx->routeData()->get('pathname'));
+    $this->assertTrue($ctx->meta()->getBoolean('completed'));
   }
 
   /**
