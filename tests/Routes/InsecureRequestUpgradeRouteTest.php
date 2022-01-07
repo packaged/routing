@@ -27,4 +27,26 @@ class InsecureRequestUpgradeRouteTest extends TestCase
     $route = InsecureRequestUpgradeRoute::i();
     $this->assertFalse($route->match($ctx));
   }
+
+  public function testHttpUpgradeWithSubDomainDefault()
+  {
+    $ctx = new Context(Request::create('http://google.com/a/b/c/?d=e&f=g'));
+    $route = InsecureRequestUpgradeRoute::withSubdomain();
+    $this->assertTrue($route->match($ctx));
+    /** @var RedirectResponse|null $resp */
+    $resp = $route->getHandler()->handle($ctx);
+    $this->assertInstanceOf(RedirectResponse::class, $resp);
+    $this->assertEquals('https://www.google.com/a/b/c/?d=e&f=g', $resp->getTargetUrl());
+  }
+
+  public function testHttpUpgradeWithSubDomain()
+  {
+    $ctx = new Context(Request::create('http://google.com/a/b/c/?d=e&f=g'));
+    $route = InsecureRequestUpgradeRoute::withSubdomain('secure');
+    $this->assertTrue($route->match($ctx));
+    /** @var RedirectResponse|null $resp */
+    $resp = $route->getHandler()->handle($ctx);
+    $this->assertInstanceOf(RedirectResponse::class, $resp);
+    $this->assertEquals('https://secure.google.com/a/b/c/?d=e&f=g', $resp->getTargetUrl());
+  }
 }
