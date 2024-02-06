@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2",
+    "php": ">=8.0",
     "packaged/context": "~1.0",
     "packaged/helpers": "~2.0"
   },
