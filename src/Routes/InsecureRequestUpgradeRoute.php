@@ -41,10 +41,10 @@ class InsecureRequestUpgradeRoute extends Route
             $qs = '?' . $qs;
           }
           $uri = $r->getBaseUrl() . $r->getPathInfo() . $qs;
-          return RedirectResponse::create("https://" . $this->_subDomain . $r->urlSprintf(".%d.%t%o") . $uri);
+          return new RedirectResponse("https://" . $this->_subDomain . $r->urlSprintf(".%d.%t%o") . $uri);
         }
 
-        return RedirectResponse::create(str_replace('http:', 'https:', $c->request()->getUri()));
+        return new RedirectResponse(str_replace('http:', 'https:', $c->request()->getUri()));
       }
     );
   }
