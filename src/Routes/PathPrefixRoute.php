@@ -4,11 +4,13 @@ namespace Packaged\Routing\Routes;
 
 use Packaged\Context\Context;
 use Packaged\Routing\Handler\Handler;
+use Packaged\Routing\RequestCondition;
 use Packaged\Routing\Route;
 
 class PathPrefixRoute extends Route
 {
   protected array $_paths = [];
+  protected string $_routedPath = '';
 
   /**
    * @param string                  $pathPrefix
@@ -29,10 +31,16 @@ class PathPrefixRoute extends Route
     {
       if(str_starts_with($path, $pathPrefix))
       {
+        $this->_routedPath = $pathPrefix;
         $this->setHandler($handler);
         return true;
       }
     }
     return false;
+  }
+
+  public function complete(Context $context)
+  {
+    $context->meta()->set(RequestCondition::META_ROUTED_PATH, $this->_routedPath);
   }
 }
