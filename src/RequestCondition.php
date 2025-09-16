@@ -116,13 +116,13 @@ class RequestCondition implements Condition, RouteCompleter
     $this->_routedPath = $context->meta()->get(self::META_ROUTED_PATH, '/');
     foreach($this->_conditions as [$matchOn, $matchWith, $matchType])
     {
-      if($matchOn == self::PATH)
+      if($matchOn === self::PATH)
       {
         if($matchWith === '/')
         {
           $matchType = self::TYPE_START;
         }
-        else if(is_string($matchWith))
+        else if(is_string($matchWith) && $matchType !== self::TYPE_REGEX)
         {
           $matchWith = $this->_convertPathToRegex($matchWith, $matchType);
           $matchType = self::TYPE_REGEX;
