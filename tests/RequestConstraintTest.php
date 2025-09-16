@@ -131,6 +131,64 @@ class RequestConstraintTest extends TestCase
     RequestCondition::i()->path('/{test#test}')->match($ctx);
   }
 
+  /**
+   * @dataProvider regexDataProvider
+   */
+  public function testRegexMatch($url, $regex, $expected)
+  {
+    $request = Request::create($url);
+    $ctx = new Context($request);
+    $this->assertEquals($expected, RequestCondition::i()->path($regex, RequestCondition::TYPE_REGEX)->match($ctx));
+  }
+
+  public static function regexDataProvider()
+  {
+    return [
+      [
+        'http://www.test.com:8080/lander-1',
+        '/-1$/',
+        true
+      ],
+      [
+        'http://www.test.com:8080/lander-1',
+        '/-2$/',
+        false
+      ],
+      [
+        'http://www.test.com:8080/lander-1',
+        '/lander/',
+        true
+      ],
+      [
+        'http://www.test.com:8080/lander-2',
+        '/.*lander-[1-9]/',
+        true
+      ],
+      [
+        'http://www.test.com:8080/lander-2',
+        '/.*lander-[^1-9]/',
+        false
+      ],
+      [
+        'http://www.test.com:8080/lander-2',
+        '/.*lander-\d{2}/',
+        false
+      ],
+      [
+        'http://www.test.com:8080/lander-21',
+        '/.*lander-\d{2}/',
+        true
+      ],
+      [
+        'http://www.test.com:8080/lander-2',
+        '/^lander$/',
+        false
+      ],
+    ];
+  }
+
+
+
   public function testMatchedPath()
   {
     $request = Request::create('http://www.test.com:8080/one/two/three', 'POST');
