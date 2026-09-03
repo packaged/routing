@@ -9,7 +9,7 @@ class RouteCompleteCallback implements RouteCompleter, Condition
   protected $_callback;
   protected $_condition;
 
-  public function __construct(callable $callback = null)
+  public function __construct(?callable $callback = null)
   {
     if($callback !== null)
     {
@@ -17,7 +17,7 @@ class RouteCompleteCallback implements RouteCompleter, Condition
     }
   }
 
-  public static function i(callable $callback = null)
+  public static function i(?callable $callback = null)
   {
     return new static($callback);
   }

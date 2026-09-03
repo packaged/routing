@@ -55,25 +55,25 @@ class RequestDataCondition implements Condition
     return new static();
   }
 
-  public function cookie(string $key, string $value = null)
+  public function cookie(string $key, ?string $value = null)
   {
     $this->_values[self::COOKIE][$key] = $value;
     return $this;
   }
 
-  public function query(string $key, string $value = null)
+  public function query(string $key, ?string $value = null)
   {
     $this->_values[self::QUERYSTRING][$key] = $value;
     return $this;
   }
 
-  public function post(string $key, string $value = null)
+  public function post(string $key, ?string $value = null)
   {
     $this->_values[self::POST][$key] = $value;
     return $this;
   }
 
-  public function server(string $key, string $value = null)
+  public function server(string $key, ?string $value = null)
   {
     $this->_values[self::SERVER][$key] = $value;
     return $this;
