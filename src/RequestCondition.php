@@ -265,29 +265,29 @@ class RequestCondition implements Condition, RouteCompleter
   {
     switch($on)
     {
-      case self::PATH;
+      case self::PATH:
         return $context->request()->path();
-      case self::SUBDOMAIN;
+      case self::SUBDOMAIN:
         return $context->request()->subDomain();
-      case self::ROOT_DOMAIN;
+      case self::ROOT_DOMAIN:
         return $context->request()->urlSprintf('%d.%t');
-      case self::DOMAIN;
+      case self::DOMAIN:
         return $context->request()->domain();
-      case self::TLD;
+      case self::TLD:
         return $context->request()->tld();
-      case self::SCHEME;
+      case self::SCHEME:
         return $context->request()->getScheme();
-      case self::PORT;
+      case self::PORT:
         return $context->request()->port();
-      case self::METHOD;
+      case self::METHOD:
         return $context->request()->getRealMethod();
-      case self::AJAX;
+      case self::AJAX:
         return $context->request()->isXmlHttpRequest();
-      case self::QUERY_KEY;
+      case self::QUERY_KEY:
         return $context->request()->query->has($matchWith) ? $matchWith : null;
-      case self::QUERY_VALUE;
+      case self::QUERY_VALUE:
         return $context->request()->query->get($matchWith[0]);
-      case self::HOSTNAME;
+      case self::HOSTNAME:
         return $context->request()->getHost();
     }
     // @codeCoverageIgnoreStart
